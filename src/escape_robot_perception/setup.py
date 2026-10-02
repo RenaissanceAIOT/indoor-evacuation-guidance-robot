@@ -11,6 +11,7 @@ setup(
         (f"share/{package_name}", ["package.xml"]),
     ],
     install_requires=["setuptools"],
+    tests_require=["pytest"],
     zip_safe=True,
     maintainer="RenaissanceAIOT",
     maintainer_email="166830931+RenaissanceAIOT@users.noreply.github.com",
@@ -24,4 +25,3 @@ setup(
         ],
     },
 )
-

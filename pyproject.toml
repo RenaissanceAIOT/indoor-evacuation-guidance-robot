@@ -2,10 +2,12 @@
 testpaths = [
   "src/escape_robot_base/test",
   "src/escape_robot_guidance/test",
+  "src/escape_robot_perception/test",
 ]
 pythonpath = [
   "src/escape_robot_base",
   "src/escape_robot_guidance",
+  "src/escape_robot_perception",
 ]
 addopts = "-ra"
 
@@ -15,4 +17,3 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
-

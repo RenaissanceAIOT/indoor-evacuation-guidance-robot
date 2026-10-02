@@ -16,6 +16,8 @@ from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import CameraInfo, Image
 from std_msgs.msg import String
 
+from escape_robot_perception.depth_geometry import project_pixel
+
 
 class ObjectDepthNode(Node):
     def __init__(self) -> None:
@@ -112,8 +114,7 @@ class ObjectDepthNode(Node):
             z = float(np.median(valid)) * scale
             if not 0.15 <= z <= 10.0:
                 continue
-            x = (u - cx) * z / fx
-            y = (v - cy) * z / fy
+            x, y, z = project_pixel(u, v, z, fx, fy, cx, cy)
             confidence = float(box.conf[0])
             pose_array.poses.append(
                 Pose(position=Point(x=x, y=y, z=z), orientation=Quaternion(w=1.0))
