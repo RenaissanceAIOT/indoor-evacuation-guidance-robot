@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="escape_robot">
+  <!-- Nominal envelope only. Replace with measured dimensions before collision validation. -->
+  <xacro:arg name="base_length" default="0.43"/>
+  <xacro:arg name="base_width" default="0.36"/>
+  <xacro:arg name="base_height" default="0.16"/>
+  <xacro:arg name="wheel_radius" default="0.05"/>
+  <xacro:arg name="wheel_width" default="0.04"/>
+  <xacro:property name="base_length" value="$(arg base_length)"/>
+  <xacro:property name="base_width" value="$(arg base_width)"/>
+  <xacro:property name="base_height" value="$(arg base_height)"/>
+  <xacro:property name="wheel_radius" value="$(arg wheel_radius)"/>
+  <xacro:property name="wheel_width" value="$(arg wheel_width)"/>
+
+  <material name="dark"><color rgba="0.10 0.12 0.15 1"/></material>
+  <material name="cyan"><color rgba="0.05 0.65 0.75 1"/></material>
+  <material name="orange"><color rgba="1.0 0.35 0.05 1"/></material>
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/><child link="base_link"/>
+    <origin xyz="0 0 ${base_height / 2.0}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <visual><geometry><box size="${base_length} ${base_width} ${base_height}"/></geometry><material name="dark"/></visual>
+    <collision><geometry><box size="${base_length} ${base_width} ${base_height}"/></geometry></collision>
+    <inertial><mass value="8.0"/><origin xyz="0 0 0"/><inertia ixx="0.10" ixy="0" ixz="0" iyy="0.14" iyz="0" izz="0.19"/></inertial>
+  </link>
+
+  <xacro:macro name="wheel" params="name x y">
+    <link name="${name}_link">
+      <visual><origin rpy="1.5708 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry><material name="cyan"/></visual>
+      <collision><origin rpy="1.5708 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry></collision>
+    </link>
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/><child link="${name}_link"/>
+      <origin xyz="${x} ${y} ${-base_height / 2.0 + wheel_radius}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+  <xacro:wheel name="front_left_wheel" x="0.15" y="0.19"/>
+  <xacro:wheel name="front_right_wheel" x="0.15" y="-0.19"/>
+  <xacro:wheel name="rear_left_wheel" x="-0.15" y="0.19"/>
+  <xacro:wheel name="rear_right_wheel" x="-0.15" y="-0.19"/>
+
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed"><parent link="base_link"/><child link="imu_link"/><origin xyz="0 0 0.05"/></joint>
+
+  <link name="laser_link">
+    <visual><geometry><cylinder radius="0.045" length="0.04"/></geometry><material name="orange"/></visual>
+  </link>
+  <joint name="laser_joint" type="fixed"><parent link="base_link"/><child link="laser_link"/><origin xyz="0.12 0 0.12"/></joint>
+
+  <link name="camera_link">
+    <visual><geometry><box size="0.09 0.025 0.025"/></geometry><material name="cyan"/></visual>
+  </link>
+  <joint name="camera_joint" type="fixed"><parent link="base_link"/><child link="camera_link"/><origin xyz="0.19 0 0.24"/></joint>
+  <link name="camera_color_optical_frame"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/><child link="camera_color_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <link name="arm_base_link"><visual><geometry><cylinder radius="0.07" length="0.05"/></geometry><material name="orange"/></visual></link>
+  <joint name="arm_mount_joint" type="fixed"><parent link="base_link"/><child link="arm_base_link"/><origin xyz="-0.08 0 0.16"/></joint>
+
+  <xacro:macro name="arm_segment" params="index parent length axis">
+    <link name="arm_link_${index}">
+      <visual><origin xyz="0 0 ${length / 2.0}"/><geometry><cylinder radius="0.018" length="${length}"/></geometry><material name="orange"/></visual>
+      <collision><origin xyz="0 0 ${length / 2.0}"/><geometry><cylinder radius="0.022" length="${length}"/></geometry></collision>
+    </link>
+    <joint name="arm_joint_${index}" type="revolute">
+      <parent link="${parent}"/><child link="arm_link_${index}"/><origin xyz="0 0 0.04"/><axis xyz="${axis}"/><limit lower="-1.5708" upper="1.5708" velocity="0.6" effort="5"/>
+    </joint>
+  </xacro:macro>
+  <xacro:arm_segment index="1" parent="arm_base_link" length="0.10" axis="0 0 1"/>
+  <xacro:arm_segment index="2" parent="arm_link_1" length="0.11" axis="0 1 0"/>
+  <xacro:arm_segment index="3" parent="arm_link_2" length="0.11" axis="0 1 0"/>
+  <xacro:arm_segment index="4" parent="arm_link_3" length="0.08" axis="1 0 0"/>
+  <xacro:arm_segment index="5" parent="arm_link_4" length="0.07" axis="0 1 0"/>
+  <xacro:arm_segment index="6" parent="arm_link_5" length="0.05" axis="1 0 0"/>
+</robot>

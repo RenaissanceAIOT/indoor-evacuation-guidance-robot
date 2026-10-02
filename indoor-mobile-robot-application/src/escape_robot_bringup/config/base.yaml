@@ -1,0 +1,15 @@
+mobile_base_driver:
+  ros__parameters:
+    port: /dev/escape_base
+    baudrate: 230400
+    mecanum: true
+    base_frame: base_link
+    odom_frame: odom
+    imu_frame: imu_link
+    publish_tf: false
+    cmd_timeout_sec: 0.35
+    max_vx_mps: 0.45
+    max_vy_mps: 0.35
+    max_wz_rps: 1.2
+    battery_capacity_ah: 10.0
+    arm_enabled: false

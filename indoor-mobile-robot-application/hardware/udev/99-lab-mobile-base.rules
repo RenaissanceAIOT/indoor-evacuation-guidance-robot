@@ -1,0 +1,2 @@
+# USB-to-serial adapter installed on the laboratory mobile base
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", MODE:="0660", GROUP:="dialout", SYMLINK+="escape_base"

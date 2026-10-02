@@ -1,0 +1,6 @@
+system_supervisor:
+  ros__parameters:
+    base_timeout_sec: 2.0
+    scan_timeout_sec: 1.0
+    minimum_voltage: 10.12
+    log_directory: ~/.local/share/escape_robot/logs

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -u
+
+failures=0
+
+check_command() {
+  if command -v "$1" >/dev/null 2>&1; then
+    echo "[OK] command: $1"
+  else
+    echo "[FAIL] missing command: $1"
+    failures=$((failures + 1))
+  fi
+}
+
+check_package() {
+  if ros2 pkg prefix "$1" >/dev/null 2>&1; then
+    echo "[OK] ROS package: $1"
+  else
+    echo "[FAIL] missing ROS package: $1"
+    failures=$((failures + 1))
+  fi
+}
+
+check_command ros2
+check_command colcon
+
+if [ -e /dev/escape_base ]; then
+  echo "[OK] serial device: /dev/escape_base"
+else
+  echo "[WARN] /dev/escape_base is absent; install the udev rule or connect the base controller"
+fi
+
+if command -v ros2 >/dev/null 2>&1; then
+  check_package escape_robot_base
+  check_package escape_robot_description
+  check_package nav2_bringup
+  check_package slam_toolbox
+  check_package robot_localization
+
+  topics="$(ros2 topic list 2>/dev/null || true)"
+  for topic in /scan /camera/color/image_raw; do
+    if printf '%s\n' "$topics" | grep -qx "$topic"; then
+      echo "[OK] topic visible: $topic"
+    else
+      echo "[WARN] topic not visible: $topic"
+    fi
+  done
+fi
+
+if [ "$failures" -gt 0 ]; then
+  echo "Preflight failed with $failures blocking issue(s)."
+  exit 1
+fi
+
+echo "Preflight passed. Resolve warnings before running hardware motion tests."

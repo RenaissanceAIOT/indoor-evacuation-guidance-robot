@@ -1,0 +1,11 @@
+evacuation_coordinator:
+  ros__parameters:
+    map_frame: map
+    hazard_weight: 8.0
+    crowd_weight: 3.0
+    distance_weight: 1.0
+    exit_ids: [east, west]
+    # [map_x, map_y, yaw_rad, hazard_risk_0_to_1, crowd_0_to_1, enabled]
+    exit_east: [6.8, 1.2, 0.0, 0.05, 0.20, 1.0]
+    exit_west: [-5.4, -0.8, 3.14, 0.15, 0.10, 1.0]
+
