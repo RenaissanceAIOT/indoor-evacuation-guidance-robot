@@ -21,7 +21,7 @@
 
 ## GitHub 命令
 
-仓库已创建；源码上传状态请以 GitHub 页面为准。以下供公开提交完成后从本地维护参考，请先 clone，不要重复创建同名仓库。
+源码已公开，项目文档、`src/` 与自动测试配置位于仓库根目录。以下供后续维护参考，请先 clone，不要重复创建同名仓库。当前验证结果见 [VALIDATION](VALIDATION.md)，实机验收条目仍需逐项完成。
 
 ```bash
 git clone https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot.git
