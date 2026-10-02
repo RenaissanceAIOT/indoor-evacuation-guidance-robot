@@ -302,7 +302,6 @@ ros2 topic pub --once /hazard/blocked_exits std_msgs/msg/String "{data: 'east'}"
 - [部署与演示脚本](docs/DEMO.md)
 - [测试计划与量化记录模板](docs/TEST_PLAN.md)
 - [限制、事实边界与后续研究](docs/LIMITATIONS.md)
-- [简历与面试表述](docs/RESUME_PROJECT.md)
 - [技术基础与软件资料](docs/TECHNICAL_BASIS.md)
 - [GitHub 发布前清单](docs/BEFORE_PUBLISH.md)
 - [设计取舍与技术实现](docs/DESIGN_DECISIONS.md)
