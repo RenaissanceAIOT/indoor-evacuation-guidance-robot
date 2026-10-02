@@ -192,10 +192,9 @@ sudo apt install -y \
 ### 7.2 构建
 
 ```bash
-mkdir -p ~/escape_robot_ws/src
-cd ~/escape_robot_ws/src
-git clone https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot.git
-cd ..
+source /opt/ros/jazzy/setup.bash
+git clone https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot.git ~/escape_robot_ws
+cd ~/escape_robot_ws
 rosdep install --from-paths src --ignore-src -r -y --rosdistro jazzy
 colcon build --symlink-install
 source install/setup.bash
@@ -236,6 +235,7 @@ ros2 launch escape_robot_bringup hardware.launch.py port:=/dev/escape_base
 
 ```bash
 ros2 launch escape_robot_bringup mapping.launch.py
+mkdir -p maps
 ros2 run nav2_map_server map_saver_cli -f maps/lab_floor
 ```
 

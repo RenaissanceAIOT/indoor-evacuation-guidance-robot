@@ -7,6 +7,7 @@
 ```bash
 source /opt/ros/jazzy/setup.bash
 source ~/escape_robot_ws/install/setup.bash
+cd ~/escape_robot_ws
 ros2 run escape_robot_bringup preflight  # 如未安装脚本，按下列命令人工检查
 ls -l /dev/escape_base
 ros2 topic hz /scan
@@ -16,6 +17,8 @@ ros2 topic hz /camera/color/image_raw
 确保底盘周围至少保留 1 m 缓冲区，急停或电源开关可立即触达。
 
 ## 1. 底盘 Bringup
+
+无硬件时可先运行 `python3 scripts/ros_smoke_test.py`，检查 ROS 消息链路、运动学 mock、命令超时与健康联锁；该检查不验证实机制动、碰撞或 Nav2。
 
 ```bash
 ros2 launch escape_robot_bringup hardware.launch.py port:=/dev/escape_base

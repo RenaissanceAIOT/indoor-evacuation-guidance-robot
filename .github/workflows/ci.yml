@@ -40,3 +40,14 @@ jobs:
           source install/setup.bash
           colcon test --event-handlers console_direct+
           colcon test-result --verbose
+      - name: Validate description, launch and mock runtime
+        shell: bash
+        env:
+          ROS_DOMAIN_ID: "77"
+          ROS_LOCALHOST_ONLY: "1"
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          xacro install/escape_robot_description/share/escape_robot_description/urdf/escape_robot.urdf.xacro > /tmp/escape_robot.urdf
+          ros2 launch escape_robot_bringup simulation.launch.py --show-args
+          python3 scripts/ros_smoke_test.py
