@@ -282,13 +282,15 @@ ros2 topic pub --once /hazard/blocked_exits std_msgs/msg/String "{data: 'east'}"
 | --- | --- | --- |
 | 协议编解码 | 参考帧、半帧、粘包、噪声、校验错误单测 | 抓取实机数据确认固件版本 |
 | 风险路由 | 距离、风险、拥堵、封锁出口单测 | 用真实楼层出口坐标更新配置 |
-| Python / YAML / XML | CI 编译与语法检查 | 在 Ubuntu 24.04 完成 colcon 构建 |
+| Python / YAML / XML | 语法和本地链接检查通过 | 现场参数仍需标定 |
+| ROS 包构建与测试 | Jazzy 容器构建 5 包、25 项测试通过 | Raspberry Pi 5 上复核性能和依赖 |
+| ROS 无硬件运行 | 运动学 mock、命令超时与联锁检查通过 | 不代表碰撞仿真或实机安全验收 |
 | 底盘安全 | 看门狗、限速、diagnostics 已实现 | 测量真实制动距离与通信断开行为 |
 | SLAM / Nav2 | 全向模型与参数基线 | 场地地图、footprint 与控制器调参 |
 | RGB-D 感知 | 同步、检测、深度中值和反投影已实现 | 固定模型版本并建立验证数据集 |
 | 疏散任务 | 状态机、重选出口、健康监控和日志已实现 | 完成多轮走廊场景验收 |
 
-验收目标与结果模板见 [docs/TEST_PLAN.md](docs/TEST_PLAN.md)。仓库不会把配置目标、仿真表现或单次演示写成已经完成的统计结果。
+实际运行链接与提交编号见 [工程验证记录](docs/VALIDATION.md)，验收目标与结果模板见 [docs/TEST_PLAN.md](docs/TEST_PLAN.md)。仓库不会把配置目标、mock 表现或单次演示写成已完成的实机统计结果。
 
 ## 10. 文档
 

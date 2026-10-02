@@ -28,6 +28,20 @@ make lint
 
 ## 云端与现场
 
-[GitHub Actions](https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot/actions) 执行 pure-python 与 ros2-build 两个任务。ROS 构建任务在官方 Jazzy 基础容器安装 rosdep 依赖并执行 colcon build/test；以对应提交的任务结果为准，不把工作流定义本身当作通过证据。
+2026-10-02 已实际完成 [CI run 36982584269](https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot/actions/runs/36982584269)，源码提交 [`ccb803d`](https://github.com/RenaissanceAIOT/indoor-evacuation-guidance-robot/commit/ccb803d085bbf939fdd29bdd0951eeea9cc0f4fe)。`pure-python` 与 `ros2-build` 两个任务均为 success。本节是运行后补充的记录，不是配置目标。
+
+ROS 环境：Ubuntu 24.04 GitHub runner、`ros:jazzy-ros-base` 容器、Python 3.12.3；属于 x86_64 云端验证，不是 Raspberry Pi 5 实测。
+
+| 检查 | 云端实际结果 | 范围 |
+| --- | --- | --- |
+| rosdep 与 colcon build | 5 个软件包全部构建成功 | 包依赖、安装与构建配置 |
+| colcon test / test-result | 25 tests，0 errors，0 failures，0 skipped | 协议 8、任务/路由 12、深度几何 5 |
+| Xacro 展开 | 通过 | 参数替换和 URDF 生成，不证明外廓标定正确 |
+| simulation launch 参数加载 | 通过 | 启动文件导入和参数定义，不是完整导航运行 |
+| ROS mock 消息运行 | 通过 | 运动与位姿积分、命令看门狗、停止/恢复、联锁心跳过期、非有限值拒绝 |
+
+mock 检查使用独立命名空间 `/portfolio_mock_check`，不打开串口，不加载地图或视觉模型，不验证碰撞。日志中的 `ROS mock smoke passed` 对应真实 ROS 消息调用，不是离线回放。
+
+早期工作流暴露了 Python 包测试发现问题；已补齐 pytest 依赖与 `tests_require`，保留原始失败运行记录，不改写历史。后续修改应以对应提交的任务结果为准，不能把工作流定义本身当作通过证据。
 
 未执行：实机串口抓包、机械臂控制、雷达/相机 launch、Nav2 场景导航、传感器故障停车、视觉模型推理性能和楼宇人员实验。验收方法见 [TEST_PLAN](TEST_PLAN.md)。
